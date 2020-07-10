@@ -70,18 +70,12 @@ int main(int argc, const char **argv)
 
     // Build Model.
     RouteModel model{osm_data};
-	std::cout << "RouteModel created\n";
 
     // Create RoutePlanner object and perform A* search.
     RoutePlanner route_planner{model, start_x, start_y, end_x, end_y};
-	std::cout << "RoutePlanner created\n";
     route_planner.AStarSearch();
-	std::cout << "AStarSearch run\n";
-
-    std::cout << "Distance: " << route_planner.GetDistance() << " meters. \n";
 
     // Render results of search.
-	std::cout << "Rendering model\n";
     Render render{model};
 
     auto display = io2d::output_surface{400, 400, io2d::format::argb32, io2d::scaling::none, io2d::refresh_style::fixed, 30};
