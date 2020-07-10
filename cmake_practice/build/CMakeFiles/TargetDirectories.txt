@@ -1,0 +1,3 @@
+/Users/michaeloverman/Documents/personal/udacity cpp/cmake_practice/build/CMakeFiles/rebuild_cache.dir
+/Users/michaeloverman/Documents/personal/udacity cpp/cmake_practice/build/CMakeFiles/edit_cache.dir
+/Users/michaeloverman/Documents/personal/udacity cpp/cmake_practice/build/CMakeFiles/vectorsum.dir
