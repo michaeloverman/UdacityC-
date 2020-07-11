@@ -52,15 +52,19 @@ int main(int argc, const char **argv)
             osm_data = std::move(*data);
     }
 
-    // TODO 1: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
-    // user input for these values using std::cin. Pass the user input to the
-    // RoutePlanner object below in place of 10, 10, 90, 90.
 	float start_x;
 	float start_y;
 	float end_x;
 	float end_y;
 	std::cout << "Enter Start X: ";
 	std::cin >> start_x;
+	// validation block from project reviewer TODO: Implement for each of the other entries
+	while (!(std::cin) || start_x < 0 || start_x > 100) {
+		std::cout << "Invalid entry. Enter a start_x from 0 to 100: ";
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		std::cin >> start_x;
+	}
 	std::cout << "Enter Start Y: ";
 	std::cin >> start_y;
 	std::cout << "  Enter End X: ";
