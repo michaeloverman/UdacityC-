@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.11.3)
 project(OSM_A_star_search)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++17 -pthread")
 
+set(OpenCV_DIR /Users/michaeloverman/Documents/personal/udacitycpp/opencv-4.1.0/)
 find_package(OpenCV 4.1 REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
