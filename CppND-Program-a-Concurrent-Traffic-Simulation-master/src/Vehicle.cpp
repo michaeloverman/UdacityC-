@@ -80,6 +80,7 @@ void Vehicle::drive()
                 auto ftrEntryGranted = std::async(&Intersection::addVehicleToQueue, _currDestination, get_shared_this());
 
                 // wait until entry has been granted
+				std::cout << "Vehicle #" << _id << " awaiting permission to proceed from Intersection #" << i2->getID() << "." << std::endl;
                 ftrEntryGranted.get();
 
                 // slow down and set intersection flag
@@ -106,9 +107,9 @@ void Vehicle::drive()
                     // this street is a dead-end, so drive back the same way
                     nextStreet = _currStreet;
                 }
-                
+
                 // pick the one intersection at which the vehicle is currently not
-                std::shared_ptr<Intersection> nextIntersection = nextStreet->getInIntersection()->getID() == _currDestination->getID() ? nextStreet->getOutIntersection() : nextStreet->getInIntersection(); 
+                std::shared_ptr<Intersection> nextIntersection = nextStreet->getInIntersection()->getID() == _currDestination->getID() ? nextStreet->getOutIntersection() : nextStreet->getInIntersection();
 
                 // send signal to intersection that vehicle has left the intersection
                 _currDestination->vehicleHasLeft(get_shared_this());

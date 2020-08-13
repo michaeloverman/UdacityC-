@@ -33,6 +33,7 @@ private:
 	std::deque<TrafficLightPhase> _queue;
 	std::mutex _mutex;
 	std::condition_variable _cond;
+	bool _dataAvailable;
 };
 
 // FP.1 : Define a class „TrafficLight“ which is a child class of TrafficObject.
@@ -48,6 +49,8 @@ public:
 	TrafficLight();
 
     // getters / setters
+	TrafficLightPhase getCurrentPhase();
+	std::string getCurrentPhaseString();
 
     // typical behaviour methods
 	void waitForGreen();
@@ -55,7 +58,6 @@ public:
 
 private:
     // typical behaviour methods
-	TrafficLightPhase getCurrentPhase();
 	void cycleThroughPhases();
 
     // FP.4b : create a private member of type MessageQueue for messages of type TrafficLightPhase

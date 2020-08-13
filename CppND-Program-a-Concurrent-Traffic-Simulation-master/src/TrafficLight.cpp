@@ -11,10 +11,13 @@ T MessageQueue<T>::receive()
     // to wait for and receive new messages and pull them from the queue using move semantics.
     // The received object should then be returned by the receive function.
 		std::unique_lock<std::mutex> lock(_mutex);
-		_cond.wait(lock, [this] { return !_queue.empty(); });
+		// _cond.wait(lock, [this] { return !_queue.empty(); });
+		_cond.wait(lock, [this] { return _dataAvailable; }); // per Knowledge suggestion - no change in behavior
 
 		T phase = std::move(_queue.front());
 		_queue.pop_front();
+		_dataAvailable = false; // per Knowledge suggestion - no change in behavior
+		// _queue.clear(); // Suggestion found on Knowledge.... didn't seem to make any difference
 
 		return phase;
 }
@@ -24,9 +27,10 @@ void MessageQueue<T>::send(T &&msg)
 {
     // FP.4a : The method send should use the mechanisms std::lock_guard<std::mutex>
     // as well as _condition.notify_one() to add a new message to the queue and afterwards send a notification.
-		std::lock_guard<std::mutex> lock(_mutex);
-		_queue.push_back(std::move(msg));
-		_cond.notify_one();
+	std::lock_guard<std::mutex> lock(_mutex);
+	_queue.push_back(std::move(msg));
+	_dataAvailable = true; // per Knowledge suggestion - no change in behavior
+	_cond.notify_one();
 }
 
 /* Implementation of class "TrafficLight" */
@@ -41,14 +45,36 @@ void TrafficLight::waitForGreen()
     // FP.5b : add the implementation of the method waitForGreen, in which an infinite while-loop
     // runs and repeatedly calls the receive function on the message queue.
     // Once it receives TrafficLightPhase::green, the method returns.
-	while(true) {
+	// while(true) {
+	// 	// TrafficLightPhase ph = _messages.receive();
+	// 	if (_messages.receive() == TrafficLightPhase::green) {
+	// 		return;
+	// 	}
+	// }
 
-	}
+	// Found on Knowledge - seems to be an improvement, but not universally
+    // std::cout << "waitForGreen. lock guard." << std::endl;
+    std::lock_guard<std::mutex> lockGuard(_mutex);
+    while (true) {
+        // std::cout << "waitForGreen. calling receive." << std::endl;
+        TrafficLightPhase traffic_phase = _messages.receive();
+        // std::cout << "waitForGreen. receive." << traffic_phase << std::endl;
+        if (traffic_phase == green) {
+            break;
+        }
+    }
+    // std::cout << "waitForGreen. notify one." << std::endl;
+    _condition.notify_one();
 }
 
 TrafficLightPhase TrafficLight::getCurrentPhase()
 {
     return _currentPhase;
+}
+
+std::string TrafficLight::getCurrentPhaseString() {
+	if (getCurrentPhase() == TrafficLightPhase::green) return "green";
+	else return "red";
 }
 
 // virtual function which is executed in a thread
@@ -74,6 +100,7 @@ void TrafficLight::cycleThroughPhases()
 
 void TrafficLight::simulate()
 {
+	std::cout << "TrafficLight simulate" << std::endl;
     // FP.2b : Finally, the private method „cycleThroughPhases“ should be started in a thread when the public method „simulate“ is called. To do this, use the thread queue in the base class.
 	threads.emplace_back(std::thread{ &TrafficLight::cycleThroughPhases, this});
 }
