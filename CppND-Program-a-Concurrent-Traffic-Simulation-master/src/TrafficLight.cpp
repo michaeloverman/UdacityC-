@@ -45,26 +45,26 @@ void TrafficLight::waitForGreen()
     // FP.5b : add the implementation of the method waitForGreen, in which an infinite while-loop
     // runs and repeatedly calls the receive function on the message queue.
     // Once it receives TrafficLightPhase::green, the method returns.
-	// while(true) {
-	// 	// TrafficLightPhase ph = _messages.receive();
-	// 	if (_messages.receive() == TrafficLightPhase::green) {
-	// 		return;
-	// 	}
-	// }
+	while(true) {
+		// TrafficLightPhase ph = _messages.receive();
+		if (_messages.receive() == TrafficLightPhase::green) {
+			return;
+		}
+	}
 
 	// Found on Knowledge - seems to be an improvement, but not universally
     // std::cout << "waitForGreen. lock guard." << std::endl;
-    std::lock_guard<std::mutex> lockGuard(_mutex);
-    while (true) {
-        // std::cout << "waitForGreen. calling receive." << std::endl;
-        TrafficLightPhase traffic_phase = _messages.receive();
-        // std::cout << "waitForGreen. receive." << traffic_phase << std::endl;
-        if (traffic_phase == green) {
-            break;
-        }
-    }
-    // std::cout << "waitForGreen. notify one." << std::endl;
-    _condition.notify_one();
+    // std::lock_guard<std::mutex> lockGuard(_mutex);
+    // while (true) {
+    //     // std::cout << "waitForGreen. calling receive." << std::endl;
+    //     TrafficLightPhase traffic_phase = _messages.receive();
+    //     // std::cout << "waitForGreen. receive." << traffic_phase << std::endl;
+    //     if (traffic_phase == green) {
+    //         break;
+    //     }
+    // }
+    // // std::cout << "waitForGreen. notify one." << std::endl;
+    // _condition.notify_one();
 }
 
 TrafficLightPhase TrafficLight::getCurrentPhase()
@@ -84,14 +84,25 @@ void TrafficLight::cycleThroughPhases()
     // and toggles the current phase of the traffic light between red and green and sends an update method
     // to the message queue using move semantics. The cycle duration should be a random value between 4 and 6 seconds.
     // Also, the while-loop should use std::this_thread::sleep_for to wait 1ms between two cycles.
-	std:srand(std::time(nullptr));
+
+	// Random num gen code found on cppreference.com:
+	std::random_device rd;
+	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<> distrib(4000, 6000);
+	int delay = distrib(gen);
+
+	// First attempt used sleep for delay. Switched to this, even though it is clearly MUCH more processor intensive,
+	// to see if this thread sleeping was somehow the cause of cars running red lights. It was not.
+	auto lastCycleTime = std::chrono::system_clock::now();
 	while (true) {
-		int delay = 4000 + std::rand() / (RAND_MAX / 2000);
-		std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-		if (_currentPhase == red) _currentPhase = green;
-		else _currentPhase = red;
-		// notify message queue
-		_messages.send(std::move(_currentPhase));
+		auto currentTime = std::chrono::system_clock::now();
+		if (std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastCycleTime).count() >= delay) {
+			if (_currentPhase == red) _currentPhase = green;
+			else _currentPhase = red;
+			// notify message queue
+			_messages.send(std::move(_currentPhase));
+			lastCycleTime = currentTime;
+		}
 
 		// 1ms wait between cycles
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
