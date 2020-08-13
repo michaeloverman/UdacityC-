@@ -33,7 +33,6 @@ private:
 	std::deque<TrafficLightPhase> _queue;
 	std::mutex _mutex;
 	std::condition_variable _cond;
-	bool _dataAvailable;
 };
 
 // FP.1 : Define a class „TrafficLight“ which is a child class of TrafficObject.

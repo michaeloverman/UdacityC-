@@ -11,13 +11,10 @@ T MessageQueue<T>::receive()
     // to wait for and receive new messages and pull them from the queue using move semantics.
     // The received object should then be returned by the receive function.
 		std::unique_lock<std::mutex> lock(_mutex);
-		// _cond.wait(lock, [this] { return !_queue.empty(); });
-		_cond.wait(lock, [this] { return _dataAvailable; }); // per Knowledge suggestion - no change in behavior
+		_cond.wait(lock, [this] { return !_queue.empty(); });
 
 		T phase = std::move(_queue.front());
 		_queue.pop_front();
-		_dataAvailable = false; // per Knowledge suggestion - no change in behavior
-		// _queue.clear(); // Suggestion found on Knowledge.... didn't seem to make any difference
 
 		return phase;
 }
@@ -28,9 +25,9 @@ void MessageQueue<T>::send(T &&msg)
     // FP.4a : The method send should use the mechanisms std::lock_guard<std::mutex>
     // as well as _condition.notify_one() to add a new message to the queue and afterwards send a notification.
 	std::lock_guard<std::mutex> lock(_mutex);
+	_queue.clear(); // Suggestion found on Knowledge, but relocated here from recieve() per Mentor suggestion
 	_queue.push_back(std::move(msg));
-	_dataAvailable = true; // per Knowledge suggestion - no change in behavior
-	_cond.notify_one();
+	_cond.notify_all(); // Switching this from notify_one to notify_all eliminated an ocassional outer light delay between turning green and vehicle proceeding; did not appear to introduce any other problems.
 }
 
 /* Implementation of class "TrafficLight" */
