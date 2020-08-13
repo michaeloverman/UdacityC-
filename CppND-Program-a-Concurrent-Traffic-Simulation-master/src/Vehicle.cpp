@@ -80,7 +80,6 @@ void Vehicle::drive()
                 auto ftrEntryGranted = std::async(&Intersection::addVehicleToQueue, _currDestination, get_shared_this());
 
                 // wait until entry has been granted
-				std::cout << "Vehicle #" << _id << " awaiting permission to proceed from Intersection #" << i2->getID() << "." << std::endl;
                 ftrEntryGranted.get();
 
                 // slow down and set intersection flag

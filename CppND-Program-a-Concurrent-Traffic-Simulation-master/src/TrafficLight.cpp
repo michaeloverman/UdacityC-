@@ -48,20 +48,6 @@ void TrafficLight::waitForGreen()
 			return;
 		}
 	}
-
-	// Found on Knowledge - seems to be an improvement, but not universally
-    // std::cout << "waitForGreen. lock guard." << std::endl;
-    // std::lock_guard<std::mutex> lockGuard(_mutex);
-    // while (true) {
-    //     // std::cout << "waitForGreen. calling receive." << std::endl;
-    //     TrafficLightPhase traffic_phase = _messages.receive();
-    //     // std::cout << "waitForGreen. receive." << traffic_phase << std::endl;
-    //     if (traffic_phase == green) {
-    //         break;
-    //     }
-    // }
-    // // std::cout << "waitForGreen. notify one." << std::endl;
-    // _condition.notify_one();
 }
 
 TrafficLightPhase TrafficLight::getCurrentPhase()
@@ -82,14 +68,12 @@ void TrafficLight::cycleThroughPhases()
     // to the message queue using move semantics. The cycle duration should be a random value between 4 and 6 seconds.
     // Also, the while-loop should use std::this_thread::sleep_for to wait 1ms between two cycles.
 
-	// Random num gen code found on cppreference.com:
+	// Random num gen code found on cppreference.com; first attempt used sleep for the delay.
 	std::random_device rd;
 	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
     std::uniform_int_distribution<> distrib(4000, 6000);
 	int delay = distrib(gen);
 
-	// First attempt used sleep for delay. Switched to this, even though it is clearly MUCH more processor intensive,
-	// to see if this thread sleeping was somehow the cause of cars running red lights. It was not.
 	auto lastCycleTime = std::chrono::system_clock::now();
 	while (true) {
 		auto currentTime = std::chrono::system_clock::now();

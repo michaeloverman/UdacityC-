@@ -74,7 +74,6 @@ void Intersection::addVehicleToQueue(std::shared_ptr<Vehicle> vehicle)
 {
     std::unique_lock<std::mutex> lck(_mtx);
     // std::cout << "Intersection #" << _id << "::addVehicleToQueue: thread id = " << std::this_thread::get_id() << std::endl;
-    std::cout << "Intersection #" << _id << "::addVehicleToQueue; light is " << _trafficLight.getCurrentPhaseString() << std::endl;
     lck.unlock();
 
     // add new vehicle to the end of the waiting line
@@ -85,7 +84,7 @@ void Intersection::addVehicleToQueue(std::shared_ptr<Vehicle> vehicle)
     // wait until the vehicle is allowed to enter
     ftrVehicleAllowedToEnter.wait();
     lck.lock();
-    std::cout << "Intersection #" << _id << ": Vehicle #" << vehicle->getID() << " is granted entry; light is " << _trafficLight.getCurrentPhaseString() << std::endl;
+    // std::cout << "Intersection #" << _id << ": Vehicle #" << vehicle->getID() << " is granted entry; light is " << _trafficLight.getCurrentPhaseString() << std::endl;
 
     // FP.6b : use the methods TrafficLight::getCurrentPhase and TrafficLight::waitForGreen to block the execution until the traffic light turns green.
 	if (_trafficLight.getCurrentPhase() == TrafficLightPhase::red) {
