@@ -1,0 +1,21 @@
+# TODO
+
+## Threading
+Snakes - ind. threads. Need to know:
+- where food is
+- where other snake is
+
+## Scores
+- is header/menu enough
+
+## Speed
+- not up each food, make wider step-wise
+- top speed before the skips in the tail
+
+## Pregame
+- control settings
+- changeable?
+
+## Post game
+- display scores
+- end gracefully

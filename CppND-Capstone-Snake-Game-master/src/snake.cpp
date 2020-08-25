@@ -57,6 +57,7 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
   }
 
   // Check if the snake has died.
+  // THIS needs to be moved into game, so it can access both snakes
   for (auto const &item : body) {
     if (current_head_cell.x == item.x && current_head_cell.y == item.y) {
       alive = false;
@@ -69,10 +70,12 @@ void Snake::GrowBody() { growing = true; }
 void Snake::IncScore() { score++; }
 
 // Inefficient method to check if cell is occupied by snake.
-bool Snake::SnakeCell(int x, int y) {
-  if (x == static_cast<int>(head_x) && y == static_cast<int>(head_y)) {
-    return true;
-  }
+bool Snake::SnakeCell(int x, int y, bool incHead) {
+	if (incHead) {
+		if (x == static_cast<int>(head_x) && y == static_cast<int>(head_y)) {
+			return true;
+		}
+	}
   for (auto const &item : body) {
     if (x == item.x && y == item.y) {
       return true;

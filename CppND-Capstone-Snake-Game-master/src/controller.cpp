@@ -16,23 +16,42 @@ void Controller::HandleInput(bool &running, Snake &snake1, Snake &snake2) const 
       running = false;
     } else if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
-        case SDLK_UP:
+        case SDLK_i:
           ChangeDirection(snake2, Snake::Direction::kUp,
                           Snake::Direction::kDown);
           break;
 
-        case SDLK_DOWN:
+        case SDLK_k:
           ChangeDirection(snake2, Snake::Direction::kDown,
                           Snake::Direction::kUp);
           break;
 
-        case SDLK_LEFT:
+        case SDLK_j:
           ChangeDirection(snake2, Snake::Direction::kLeft,
                           Snake::Direction::kRight);
           break;
 
-        case SDLK_RIGHT:
+        case SDLK_l:
           ChangeDirection(snake2, Snake::Direction::kRight,
+                          Snake::Direction::kLeft);
+          break;
+        case SDLK_w:
+          ChangeDirection(snake1, Snake::Direction::kUp,
+                          Snake::Direction::kDown);
+          break;
+
+        case SDLK_s:
+          ChangeDirection(snake1, Snake::Direction::kDown,
+                          Snake::Direction::kUp);
+          break;
+
+        case SDLK_a:
+          ChangeDirection(snake1, Snake::Direction::kLeft,
+                          Snake::Direction::kRight);
+          break;
+
+        case SDLK_d:
+          ChangeDirection(snake1, Snake::Direction::kRight,
                           Snake::Direction::kLeft);
           break;
       }

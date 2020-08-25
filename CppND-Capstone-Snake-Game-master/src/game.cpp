@@ -60,7 +60,7 @@ void Game::PlaceFood(SDL_Point &food) {
 	// std::cout << "Loc, x: " << x << ", y: " << y << std::endl;
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake1.SnakeCell(x, y)) {
+    if (!snake1.SnakeCell(x, y, true) && !snake2.SnakeCell(x, y, true)) {
       food.x = x;
       food.y = y;
       return;
@@ -70,10 +70,21 @@ void Game::PlaceFood(SDL_Point &food) {
 }
 
 void Game::Update() {
-  if (!snake1.alive) return;
+  if (!snake1.alive || !snake2.alive) return;
 
   snake1.Update();
   snake2.Update();
+
+  // Check if either snake has run into itself or the other
+  if (snake1.SnakeCell(snake1.head_x, snake1.head_y, false) || snake2.SnakeCell(snake1.head_x, snake1.head_y, true)) {
+	  // snake 1 is dead
+	  snake1.alive = false;
+  }
+  if (snake1.SnakeCell(snake2.head_x, snake2.head_y, true) || snake2.SnakeCell(snake2.head_x, snake2.head_y, false)) {
+	  // snake 2 is dead
+	  snake2.alive = false;
+  }
+
 
   int new_x = static_cast<int>(snake1.head_x);
   int new_y = static_cast<int>(snake1.head_y);
@@ -84,14 +95,14 @@ void Game::Update() {
     PlaceFood(food1);
     // Grow snake and increase speed.
     snake1.GrowBody();
-    snake1.speed += 0.015;
+    snake1.speed += 0.01;
   }
   if (food2.x == new_x && food2.y == new_y) {
     snake1.IncScore();
     PlaceFood(food2);
     // Grow snake and increase speed.
     snake1.GrowBody();
-    snake1.speed += 0.015;
+    snake1.speed += 0.01;
   }
   new_x = static_cast<int>(snake2.head_x);
   new_y = static_cast<int>(snake2.head_y);
@@ -102,14 +113,14 @@ void Game::Update() {
     PlaceFood(food1);
     // Grow snake and increase speed.
     snake2.GrowBody();
-    snake2.speed += 0.015;
+    snake2.speed += 0.01;
   }
   if (food2.x == new_x && food2.y == new_y) {
     snake2.IncScore();
     PlaceFood(food2);
     // Grow snake and increase speed.
     snake2.GrowBody();
-    snake2.speed += 0.015;
+    snake2.speed += 0.01;
   }
 }
 
