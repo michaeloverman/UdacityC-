@@ -24,8 +24,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, snake1);
-    controller.HandleInput(running, snake2);
+    controller.HandleInput(running, snake1, snake2);
     Update();
     renderer.Render(snake1, snake2, food1, food2);
 
@@ -38,7 +37,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(GetScore1(), GetScore2(), frame_count);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -81,38 +80,39 @@ void Game::Update() {
 
   // Check if there's food over here
   if (food1.x == new_x && food1.y == new_y) {
-    score++;
+    snake1.IncScore();
     PlaceFood(food1);
     // Grow snake and increase speed.
     snake1.GrowBody();
-    snake1.speed += 0.02;
+    snake1.speed += 0.015;
   }
   if (food2.x == new_x && food2.y == new_y) {
-    score++;
+    snake1.IncScore();
     PlaceFood(food2);
     // Grow snake and increase speed.
     snake1.GrowBody();
-    snake1.speed += 0.02;
+    snake1.speed += 0.015;
   }
   new_x = static_cast<int>(snake2.head_x);
   new_y = static_cast<int>(snake2.head_y);
 
   // Check if there's food over here
   if (food1.x == new_x && food1.y == new_y) {
-    score++;
+    snake2.IncScore();
     PlaceFood(food1);
     // Grow snake and increase speed.
     snake2.GrowBody();
-    snake2.speed += 0.02;
+    snake2.speed += 0.015;
   }
   if (food2.x == new_x && food2.y == new_y) {
-    score++;
+    snake2.IncScore();
     PlaceFood(food2);
     // Grow snake and increase speed.
     snake2.GrowBody();
-    snake2.speed += 0.02;
+    snake2.speed += 0.015;
   }
 }
 
-int Game::GetScore() const { return score; }
+int Game::GetScore1() const { return snake1.score; }
+int Game::GetScore2() const { return snake2.score; }
 int Game::GetSize() const { return snake1.size; }
