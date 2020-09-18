@@ -223,6 +223,33 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SnakeGame.dir/build.make CMakeFiles/SnakeGame.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/opening.o: src/opening.cpp.o
+
+.PHONY : src/opening.o
+
+# target to build an object file
+src/opening.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SnakeGame.dir/build.make CMakeFiles/SnakeGame.dir/src/opening.cpp.o
+.PHONY : src/opening.cpp.o
+
+src/opening.i: src/opening.cpp.i
+
+.PHONY : src/opening.i
+
+# target to preprocess a source file
+src/opening.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SnakeGame.dir/build.make CMakeFiles/SnakeGame.dir/src/opening.cpp.i
+.PHONY : src/opening.cpp.i
+
+src/opening.s: src/opening.cpp.s
+
+.PHONY : src/opening.s
+
+# target to generate assembly for a file
+src/opening.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SnakeGame.dir/build.make CMakeFiles/SnakeGame.dir/src/opening.cpp.s
+.PHONY : src/opening.cpp.s
+
 src/renderer.o: src/renderer.cpp.o
 
 .PHONY : src/renderer.o
@@ -295,6 +322,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/opening.o"
+	@echo "... src/opening.i"
+	@echo "... src/opening.s"
 	@echo "... src/renderer.o"
 	@echo "... src/renderer.i"
 	@echo "... src/renderer.s"
