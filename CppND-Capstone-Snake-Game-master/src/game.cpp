@@ -14,6 +14,25 @@ Game::Game(std::size_t grid_width, std::size_t grid_height)
 	PlaceFood(food2);
 }
 
+void Game::OpeningScreen(std::promise<void> &&promise, Controller const &controller, Renderer &renderer) {
+	// run opening screen until space bar click
+	std::cout << "OpeningScreen()" << std::endl;
+
+	renderer.UpdateWindowTitle(0, 0, 0);
+
+	bool running = true;
+	Uint32 count = 0;
+	while (running) {
+		count += 1;
+		renderer.RenderStart(2);
+		if (count > 10000) running = false;
+	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(4000)); // simulate wait for click
+    // std::string modifiedMessage = message + " has been modified";
+	std::cout << "Setting value on promise to return to..." << std::endl;
+    promise.set_value();
+}
+
 void Game::Run(Controller const &controller, Renderer &renderer,
 			 std::size_t target_frame_duration) {
 	Uint32 title_timestamp = SDL_GetTicks();
@@ -29,17 +48,19 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // std::string messageToThread = "opening_screen";
 
     // create promise and future
-    // std::promise<void> prms;
-    // std::future<void> ftr = prms.get_future();
+    std::promise<void> prms;
+    std::future<void> ftr = prms.get_future();
 
     // start thread and pass promise as argument
-    // std::thread t(OpeningScreen, std::move(prms), controller, renderer);
+    OpeningScreen(std::move(prms), controller, renderer);
 
     // retrieve modified message via future and print to console
-    // ftr.wait();
-    // std::cout << "Returned from opening screen promise/future" << std::endl;
-//
-	// t.join();
+	try {
+		ftr.wait();
+		std::cout << "Returned from opening screen promise/future" << std::endl;
+	} catch (std::runtime_error e) {
+		std::cout << e.what() << std::endl;
+	}
 
 	while (running) {
 		frame_start = SDL_GetTicks();

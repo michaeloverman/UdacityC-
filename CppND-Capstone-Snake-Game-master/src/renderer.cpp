@@ -53,6 +53,7 @@ void Renderer::drawLetter(std::vector<std::pair<int, int>> l, int x, int y) {
 		SDL_RenderFillRect(sdl_renderer, &block);
 	}
 }
+
 void Renderer::RenderStart(int messageStartPos) {
 	SDL_Rect block;
 	block.w = screen_width / grid_width;
@@ -70,7 +71,7 @@ void Renderer::RenderStart(int messageStartPos) {
 
 	// Update Screen
 	SDL_RenderPresent(sdl_renderer);
-
+	std::cout << "SDL_RenderPresent called - there should be a screen?!" << std::endl;
 }
 
 void Renderer::Render(Snake const snake1, Snake const snake2, SDL_Point const &food1, SDL_Point const &food2) {

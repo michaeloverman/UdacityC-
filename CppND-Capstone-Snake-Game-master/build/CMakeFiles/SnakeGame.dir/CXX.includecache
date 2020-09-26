@@ -10,9 +10,9 @@
 snake.h
 /Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/snake.h
 
-/Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/opening.cpp
-opening.h
-/Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/opening.h
+/Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/game.cpp
+game.h
+/Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/game.h
 iostream
 -
 SDL.h
@@ -20,13 +20,17 @@ SDL.h
 thread
 -
 
-/Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/opening.h
+/Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/game.h
+random
+-
 SDL.h
 /Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/SDL.h
 controller.h
 /Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/controller.h
 renderer.h
 /Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/renderer.h
+snake.h
+/Users/michaeloverman/Documents/personal/udacitycpp/CppND-Capstone-Snake-Game-master/src/snake.h
 thread
 -
 future

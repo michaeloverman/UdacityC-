@@ -33,7 +33,7 @@ class Game {
   std::uniform_int_distribution<int> random_h;
 
 //   int score{0};
-  static void OpeningScreen(std::promise<void> && prms, Controller const &controller, Renderer &renderer);
+  static void OpeningScreen(std::promise<void> &&prms, Controller const &controller, Renderer &renderer);
   void PlaceFood(SDL_Point &food);
   void Update();
 };
