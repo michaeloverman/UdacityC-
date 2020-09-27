@@ -9,6 +9,21 @@ void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
   return;
 }
 
+void Controller::WaitForSpace(bool &running) const {
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+		if(e.type == SDL_QUIT) {
+			running = false;
+		} else if (e.type == SDL_KEYDOWN) {
+			switch (e.key.keysym.sym) {
+				case SDLK_SPACE:
+					running = false;
+					break;
+			}
+		}
+	}
+}
+
 void Controller::HandleInput(bool &running, Snake &snake1, Snake &snake2) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {

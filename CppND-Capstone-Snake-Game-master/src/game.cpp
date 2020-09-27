@@ -18,16 +18,38 @@ void Game::OpeningScreen(std::promise<void> &&promise, Controller const &control
 	// run opening screen until space bar click
 	std::cout << "OpeningScreen()" << std::endl;
 
-	renderer.UpdateWindowTitle(0, 0, 0);
-
 	bool running = true;
 	Uint32 count = 0;
+
+	Uint32 title_timestamp = SDL_GetTicks();
+	Uint32 frame_start;
+	Uint32 frame_end;
+	Uint32 frame_duration;
+
 	while (running) {
-		count += 1;
+		frame_start = SDL_GetTicks();
+
+		controller.WaitForSpace(running);
+
+		count++;
 		renderer.RenderStart(2);
+
+		frame_end = SDL_GetTicks();
+
+		frame_duration = frame_end - frame_start;
+
+		if (frame_end - title_timestamp >= 1000) {
+			renderer.UpdateWindowTitle(0, 0, count);
+			count = 0;
+			title_timestamp = frame_end;
+		}
+
+		if (frame_duration < 1000 / 60) {
+			SDL_Delay(1000/60 - frame_duration);
+		}
 		if (count > 10000) running = false;
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(4000)); // simulate wait for click
+	// std::this_thread::sleep_for(std::chrono::milliseconds(4000)); // simulate wait for click
     // std::string modifiedMessage = message + " has been modified";
 	std::cout << "Setting value on promise to return to..." << std::endl;
     promise.set_value();
