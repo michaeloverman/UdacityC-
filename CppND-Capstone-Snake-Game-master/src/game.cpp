@@ -25,6 +25,8 @@ void Game::OpeningScreen(std::promise<void> &&promise, Controller const &control
 	Uint32 frame_start;
 	Uint32 frame_end;
 	Uint32 frame_duration;
+	int messagePos = 2;
+	bool messageRight = true;
 
 	while (running) {
 		frame_start = SDL_GetTicks();
@@ -32,7 +34,14 @@ void Game::OpeningScreen(std::promise<void> &&promise, Controller const &control
 		controller.WaitForSpace(running);
 
 		count++;
-		renderer.RenderStart(2);
+		renderer.RenderStart(messagePos);
+
+		if (count % 2 == 0) {
+			if (messageRight) messagePos++;
+			else messagePos--;
+			if (messagePos == 30) messageRight = false;
+			if (messagePos == -6 ) messageRight = true;
+		}
 
 		frame_end = SDL_GetTicks();
 
@@ -47,7 +56,6 @@ void Game::OpeningScreen(std::promise<void> &&promise, Controller const &control
 		if (frame_duration < 1000 / 60) {
 			SDL_Delay(1000/60 - frame_duration);
 		}
-		if (count > 10000) running = false;
 	}
 	// std::this_thread::sleep_for(std::chrono::milliseconds(4000)); // simulate wait for click
     // std::string modifiedMessage = message + " has been modified";
