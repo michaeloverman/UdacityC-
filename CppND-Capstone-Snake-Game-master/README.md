@@ -79,15 +79,22 @@ The project code compiles and runs without errors.
 
 * The project demonstrates an understanding of C++ functions and control structures.
 
-A variety of control structures are used in the project.
+A variety of control structures are used in the project:
+ - game loop in game.cpp
+ - openingScreen loop also in game.cpp
+ - switch statement for handling player controls in controller.cpp
+ - numerous for-loops for drawing opening screen in renderer.cpp
 
-The project code is clearly organized into functions.
+The project code is clearly organized into functions:
+ - drawLetter function on openingscreen in renderer.cpp
 
 * The project reads data from a file and process the data, or the program writes data to a file.
 
 The project reads data from an external file or writes data to a file as part of the necessary operation of the program.
 
-* The project accepts user input and processes the input.
+* The project accepts user input and processes the input:
+ - controller.cpp accepts user controls for two players controlling two independent snakes
+ - controller.cpp accepts input from user to start game
 
 The project accepts input from a user as part of the necessary operation of the program.
 
@@ -119,7 +126,8 @@ Inheritance hierarchies are logical. Composition is used instead of inheritance 
 
 * Overloaded functions allow the same function to operate on different parameters.
 
-One function is overloaded with different signatures for the same function name.
+One function is overloaded with different signatures for the same function name:
+ - HandleInput function in controller.cpp is overloaded for different needs of opening screen vs game itself
 
 * Derived class functions override virtual base class functions.
 
@@ -133,7 +141,9 @@ One function is declared with a template that allows it to accept a generic para
 
 * The project makes use of references in function declarations.
 
-At least two variables are defined as references, or two functions use pass-by-reference in the project code.
+At least two variables are defined as references, or two functions use pass-by-reference in the project code:
+ - Game::Run and Game::OpeningScreen use pass-by-reference of controller and renderer
+ - Game::OpeningScreen uses pass-by-reference of a promise for future to start the game
 
 * The project uses destructors appropriately.
 
@@ -147,7 +157,8 @@ The project follows the Resource Acquisition Is Initialization pattern where app
 
 For all classes, if any one of the copy constructor, copy assignment operator, move constructor, move assignment operator, and destructor are defined, then all of these functions are defined.
 
-* The project uses move semantics to move data, instead of copying it, where possible.
+* The project uses move semantics to move data, instead of copying it, where possible:
+ - Game::Run moves promise to Game::OpeningScreen
 
 For classes with move constructors, the project returns objects of that class by value, and relies on the move constructor, instead of copying the object.
 
@@ -163,7 +174,8 @@ The project uses multiple threads in the execution.
 
 * A promise and future is used in the project.
 
-A promise and future is used to pass data from a worker thread to a parent thread in the project code.
+A promise and future is used to pass data from a worker thread to a parent thread in the project code:
+ - promise/future used in Game::OpeningScreen
 
 * A mutex or lock is used in the project.
 
