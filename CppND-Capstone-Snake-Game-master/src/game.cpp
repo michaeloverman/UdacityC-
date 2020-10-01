@@ -31,7 +31,7 @@ void Game::OpeningScreen(std::promise<void> &&promise, Controller const &control
 	while (running) {
 		frame_start = SDL_GetTicks();
 
-		controller.WaitForSpace(running);
+		controller.HandleInput(running);
 
 		count++;
 		renderer.RenderStart(messagePos);
@@ -57,8 +57,6 @@ void Game::OpeningScreen(std::promise<void> &&promise, Controller const &control
 			SDL_Delay(1000/60 - frame_duration);
 		}
 	}
-	// std::this_thread::sleep_for(std::chrono::milliseconds(4000)); // simulate wait for click
-    // std::string modifiedMessage = message + " has been modified";
 	std::cout << "Setting value on promise to return to..." << std::endl;
     promise.set_value();
 }
@@ -72,10 +70,6 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 	int frame_count = 0;
 	bool running = true;
 	startMessagePos = 2;
-
-	// INSERT  Opening screen, instructions, wait for start (spacebar?) (using promise/future?)
-    // define message
-    // std::string messageToThread = "opening_screen";
 
     // create promise and future
     std::promise<void> prms;
