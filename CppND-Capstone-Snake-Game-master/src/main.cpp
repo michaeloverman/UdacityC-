@@ -1,7 +1,6 @@
 #include <iostream>
 #include "controller.h"
 #include "game.h"
-#include "opening.h"
 #include "renderer.h"
 
 int main() {
